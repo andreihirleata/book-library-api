@@ -5,7 +5,7 @@ const { Reader } = require("../src/sequelize");
 
 describe("/readers", () => {
   let reader;
-  let reader2;
+  let reader1;
 
   before(async () => {
     try {
@@ -21,10 +21,12 @@ describe("/readers", () => {
       reader = await Reader.create({
         name: "mockName",
         email: "mockMail@mock.com",
+        password: "1234",
       });
       reader1 = await Reader.create({
         name: "mockName1",
         email: "mockMail1@mock.com",
+        password: "12345",
       });
     } catch (err) {
       console.log(err);
@@ -35,11 +37,12 @@ describe("/readers", () => {
     it("creates a new reader in database", (done) => {
       request(app)
         .post("/readers/")
-        .send({ name: "test", email: "testit@test.com" })
+        .send({ name: "test", email: "testit@test.com", password: "test" })
         .then((res) => {
           expect(res.status).to.equal(201);
           expect(res.body.name).to.equal("test");
           expect(res.body.email).to.equal("testit@test.com");
+          expect(res.body.password).to.equal("test");
           done();
         });
     });
@@ -53,6 +56,7 @@ describe("/readers", () => {
           expect(res.status).to.equal(200);
           expect(res.body.name).to.equal(reader.name);
           expect(res.body.email).to.equal(reader.email);
+          expect(res.body.password).to.equal(reader.password);
           done();
         });
     });
@@ -83,12 +87,17 @@ describe("/readers", () => {
     it("updates a reader given an id", (done) => {
       request(app)
         .patch(`/readers/${reader.id}`)
-        .send({ name: "updatedName", email: "updatedEmail" })
+        .send({
+          name: "updatedName",
+          email: "updatedEmail",
+          password: "updatedPassword",
+        })
         .then((res) => {
           expect(res.status).to.equal(200);
           Reader.findByPk(reader.id, { raw: true }).then((updatedReader) => {
             expect(updatedReader.name).to.equal("updatedName");
             expect(updatedReader.email).to.equal("updatedEmail");
+            expect(updatedReader.password).to.equal("updatedPassword");
           });
           done();
         });
