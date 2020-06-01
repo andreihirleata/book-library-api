@@ -1,7 +1,11 @@
 const { Reader } = require("../sequelize");
 
 exports.create = (req, res) => {
-  Reader.create(req.body).then((reader) => res.status(201).json(reader));
+  Reader.create(req.body)
+    .then((reader) => res.status(201).json(reader))
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 exports.read = (req, res) => {
@@ -23,13 +27,17 @@ exports.readAll = (req, res) => {
 
 exports.update = (req, res) => {
   const id = parseInt(req.params.readerId, 10);
-  Reader.update(req.body, { where: { id } }).then(([updatedRows]) => {
-    if (!updatedRows) {
-      res.status(404).json({ error: "The reader could not be found." });
-    } else {
-      res.status(200).json(updatedRows);
-    }
-  });
+  Reader.update(req.body, { where: { id } })
+    .then(([updatedRows]) => {
+      if (!updatedRows) {
+        res.status(404).json({ error: "The reader could not be found." });
+      } else {
+        res.status(200).json(updatedRows);
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 exports.delete = (req, res) => {
