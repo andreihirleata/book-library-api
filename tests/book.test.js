@@ -26,7 +26,7 @@ describe("/books", () => {
       });
       book1 = await Book.create({
         title: "mockTitle1",
-        autor: "mockAuthor1",
+        author: "mockAuthor1",
         genre: "mockGenre1",
         ISBN: "12345",
       });
@@ -50,6 +50,20 @@ describe("/books", () => {
           expect(res.body.author).to.equal("Arthur C. Clarke");
           expect(res.body.genre).to.equal("Science Fiction");
           expect(res.body.ISBN).to.equal("0-453-00269-2");
+          done();
+        });
+    });
+    it("returns an error if title/author are missing", (done) => {
+      request(app)
+        .post("/books")
+        .send({
+          author: "Arthur C. Clarke",
+          genre: "Science Fiction",
+          ISBN: "0-453-00269-2",
+        })
+        .then((res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.errors[0].message).to.equal("title is required");
           done();
         });
     });

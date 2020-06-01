@@ -1,9 +1,13 @@
 const { Book } = require("../sequelize");
 
 exports.create = (req, res) => {
-  Book.create(req.body).then((book) => {
-    res.status(201).json(book);
-  });
+  Book.create(req.body)
+    .then((book) => {
+      res.status(201).json(book);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
 exports.read = (req, res) => {
