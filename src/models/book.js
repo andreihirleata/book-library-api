@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: "author is required" },
       },
     },
-    genre: DataTypes.STRING,
     ISBN: DataTypes.STRING,
   };
 

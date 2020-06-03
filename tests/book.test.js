@@ -21,13 +21,11 @@ describe("/books", () => {
       book = await Book.create({
         title: "mockTitle",
         author: "mockAuthor",
-        genre: "mockGenre",
         ISBN: "1234",
       });
       book1 = await Book.create({
         title: "mockTitle1",
         author: "mockAuthor1",
-        genre: "mockGenre1",
         ISBN: "12345",
       });
     } catch (err) {
@@ -41,14 +39,12 @@ describe("/books", () => {
         .send({
           title: "2001: A Space Odyssey",
           author: "Arthur C. Clarke",
-          genre: "Science Fiction",
           ISBN: "0-453-00269-2",
         })
         .then((res) => {
           expect(res.status).to.equal(201);
           expect(res.body.title).to.equal("2001: A Space Odyssey");
           expect(res.body.author).to.equal("Arthur C. Clarke");
-          expect(res.body.genre).to.equal("Science Fiction");
           expect(res.body.ISBN).to.equal("0-453-00269-2");
           done();
         });
@@ -58,7 +54,6 @@ describe("/books", () => {
         .post("/books")
         .send({
           author: "Arthur C. Clarke",
-          genre: "Science Fiction",
           ISBN: "0-453-00269-2",
         })
         .then((res) => {
@@ -76,7 +71,6 @@ describe("/books", () => {
           expect(res.status).to.equal(200);
           expect(res.body.title).to.equal("mockTitle");
           expect(res.body.author).to.equal("mockAuthor");
-          expect(res.body.genre).to.equal("mockGenre");
           expect(res.body.ISBN).to.equal("1234");
           done();
         });
@@ -109,7 +103,6 @@ describe("/books", () => {
         .send({
           title: "updatedTitle",
           author: "updatedAuthor",
-          genre: "updatedGenre",
           ISBN: "updatedISBN",
         })
         .then((res) => {
@@ -117,7 +110,6 @@ describe("/books", () => {
           Book.findByPk(book.id).then((updatedBook) => {
             expect(updatedBook.title).to.equal("updatedTitle");
             expect(updatedBook.author).to.equal("updatedAuthor");
-            expect(updatedBook.genre).to.equal("updatedGenre");
             expect(updatedBook.ISBN).to.equal("updatedISBN");
           });
           done();
@@ -129,7 +121,6 @@ describe("/books", () => {
         .send({
           title: "updatedTitle",
           author: "updatedAuthor",
-          genre: "updatedGenre",
           ISBN: "updatedISBN",
         })
         .then((res) => {

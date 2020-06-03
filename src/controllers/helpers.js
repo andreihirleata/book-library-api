@@ -14,6 +14,14 @@ const getModel = (model) => {
   return models[model];
 };
 
+const getOptions = (model) => {
+  if (model === "book") return { include: Genre };
+
+  if (model === "genre") return { include: Book };
+
+  return {};
+};
+
 const get404error = (model) => {
   return { error: `The ${model} could not be found.` };
 };
@@ -40,14 +48,16 @@ const createItem = (res, model, item) => {
 };
 
 const readItem = (res, model, id) => {
-  const parsedId = parseInt(id, 10);
   const Model = getModel(model);
+  const parsedId = parseInt(id, 10);
+  const options = getOptions(model);
 
-  Model.findByPk(parsedId).then((item) => {
+  return Model.findByPk(parsedId, { ...options }).then((item) => {
     if (!item) {
       res.status(404).json(get404error(model));
     } else {
       const itemWithoutPassword = removePassword(item.dataValues);
+
       res.status(200).json(itemWithoutPassword);
     }
   });
@@ -75,8 +85,9 @@ const updateItem = (req, res, model, id) => {
 
 const readAllItems = (res, model) => {
   const Model = getModel(model);
+  const options = getOptions(model);
 
-  Model.findAll().then((items) => {
+  Model.findAll({ ...options }).then((items) => {
     const itemsWithoutPassword = items.map((item) => {
       return removePassword(item.dataValues);
     });
