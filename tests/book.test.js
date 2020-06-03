@@ -20,12 +20,10 @@ describe("/books", () => {
       await Book.destroy({ where: {} });
       book = await Book.create({
         title: "mockTitle",
-        author: "mockAuthor",
         ISBN: "1234",
       });
       book1 = await Book.create({
         title: "mockTitle1",
-        author: "mockAuthor1",
         ISBN: "12345",
       });
     } catch (err) {
@@ -38,13 +36,11 @@ describe("/books", () => {
         .post("/books")
         .send({
           title: "2001: A Space Odyssey",
-          author: "Arthur C. Clarke",
           ISBN: "0-453-00269-2",
         })
         .then((res) => {
           expect(res.status).to.equal(201);
           expect(res.body.title).to.equal("2001: A Space Odyssey");
-          expect(res.body.author).to.equal("Arthur C. Clarke");
           expect(res.body.ISBN).to.equal("0-453-00269-2");
           done();
         });
@@ -53,7 +49,6 @@ describe("/books", () => {
       request(app)
         .post("/books")
         .send({
-          author: "Arthur C. Clarke",
           ISBN: "0-453-00269-2",
         })
         .then((res) => {
@@ -70,7 +65,6 @@ describe("/books", () => {
         .then((res) => {
           expect(res.status).to.equal(200);
           expect(res.body.title).to.equal("mockTitle");
-          expect(res.body.author).to.equal("mockAuthor");
           expect(res.body.ISBN).to.equal("1234");
           done();
         });
@@ -102,14 +96,12 @@ describe("/books", () => {
         .patch(`/books/${book.id}`)
         .send({
           title: "updatedTitle",
-          author: "updatedAuthor",
           ISBN: "updatedISBN",
         })
         .then((res) => {
           expect(res.status).to.equal(200);
           Book.findByPk(book.id).then((updatedBook) => {
             expect(updatedBook.title).to.equal("updatedTitle");
-            expect(updatedBook.author).to.equal("updatedAuthor");
             expect(updatedBook.ISBN).to.equal("updatedISBN");
           });
           done();
@@ -120,7 +112,6 @@ describe("/books", () => {
         .patch(`/books/1234`)
         .send({
           title: "updatedTitle",
-          author: "updatedAuthor",
           ISBN: "updatedISBN",
         })
         .then((res) => {

@@ -7,13 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: "title is required" },
       },
     },
-    author: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "author is required" },
-      },
-    },
     ISBN: DataTypes.STRING,
   };
 

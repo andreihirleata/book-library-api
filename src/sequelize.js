@@ -24,6 +24,8 @@ const setupDatabse = () => {
 
   Genre.hasMany(Book);
   Book.belongsTo(Genre);
+  Author.hasMany(Book);
+  Book.belongsTo(Author);
 
   sequelize.sync({ alter: true });
 
