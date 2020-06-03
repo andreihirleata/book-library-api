@@ -1,10 +1,14 @@
 const { Book } = require("../sequelize");
 const { Reader } = require("../sequelize");
+const { Author } = require("../sequelize");
+const { Genre } = require("../sequelize");
 
 const getModel = (model) => {
   const models = {
     book: Book,
     reader: Reader,
+    author: Author,
+    genre: Genre,
   };
 
   return models[model];
@@ -14,12 +18,12 @@ const get404error = (model) => {
   return { error: `The ${model} could not be found.` };
 };
 
-const getAllItems = (res, model) => {
-  const Model = getModel(model);
+const removePassword = (obj) => {
+  if (obj.hasOwnProperty("password")) {
+    delete obj.password;
+  }
 
-  Model.findAll().then((allItems) => {
-    res.status(200).json(allItems);
-  });
+  return obj;
 };
 
 const createItem = (res, model, item) => {
@@ -27,7 +31,8 @@ const createItem = (res, model, item) => {
 
   Model.create(item)
     .then((createdItem) => {
-      res.status(201).json(createdItem);
+      const itemWithoutPassword = removePassword(createdItem.dataValues);
+      res.status(201).json(itemWithoutPassword);
     })
     .catch((error) => {
       res.status(400).json(error);
@@ -42,7 +47,8 @@ const readItem = (res, model, id) => {
     if (!item) {
       res.status(404).json(get404error(model));
     } else {
-      res.status(200).json(item);
+      const itemWithoutPassword = removePassword(item.dataValues);
+      res.status(200).json(itemWithoutPassword);
     }
   });
 };
@@ -56,7 +62,10 @@ const updateItem = (req, res, model, id) => {
       if (!updatedRows) {
         res.status(404).json(get404error(model));
       } else {
-        res.status(200).json(updatedRows);
+        Model.findByPk(parsedId).then((updatedItem) => {
+          const itemWithoutPassword = removePassword(updatedItem.dataValues);
+          res.status(200).json(itemWithoutPassword);
+        });
       }
     })
     .catch((err) => {
@@ -68,7 +77,10 @@ const readAllItems = (res, model) => {
   const Model = getModel(model);
 
   Model.findAll().then((items) => {
-    res.status(200).json(items);
+    const itemsWithoutPassword = items.map((item) => {
+      return removePassword(item.dataValues);
+    });
+    res.status(200).json(itemsWithoutPassword);
   });
 };
 
@@ -88,7 +100,6 @@ const deleteItem = (res, model, id) => {
 module.exports = {
   getModel,
   get404error,
-  getAllItems,
   createItem,
   readItem,
   updateItem,

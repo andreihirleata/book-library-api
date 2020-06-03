@@ -1,6 +1,8 @@
 const Sequelize = require("sequelize");
 const ReaderModel = require("./models/reader");
 const BookModel = require("./models/book");
+const AuthorModel = require("./models/author");
+const GenreModel = require("./models/genre");
 
 const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
@@ -14,12 +16,16 @@ const setupDatabse = () => {
 
   const Reader = ReaderModel(sequelize, Sequelize);
   const Book = BookModel(sequelize, Sequelize);
+  const Author = AuthorModel(sequelize, Sequelize);
+  const Genre = GenreModel(sequelize, Sequelize);
 
   sequelize.sync({ alter: true });
 
   return {
     Reader,
     Book,
+    Author,
+    Genre,
   };
 };
 

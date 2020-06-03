@@ -42,7 +42,7 @@ describe("/readers", () => {
           expect(res.status).to.equal(201);
           expect(res.body.name).to.equal("test");
           expect(res.body.email).to.equal("testit@test.com");
-          expect(res.body.password).to.equal("12345678");
+          expect(res.body.password).to.equal(undefined);
           done();
         });
     });
@@ -96,7 +96,7 @@ describe("/readers", () => {
           expect(res.status).to.equal(200);
           expect(res.body.name).to.equal(reader.name);
           expect(res.body.email).to.equal(reader.email);
-          expect(res.body.password).to.equal(reader.password);
+          expect(res.body.password).to.equal(undefined);
           done();
         });
     });
