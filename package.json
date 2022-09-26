@@ -37,6 +37,6 @@
     "express": "^4.17.1",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.11",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   }
 }
