@@ -34,7 +34,7 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.11",
     "validator": "^13.0.0"
